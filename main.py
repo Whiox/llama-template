@@ -1,17 +1,23 @@
 from llama_cpp import Llama
-from config import get_prompt, format_chat, MODEL_PATH
+from config import get_prompt, format_chat, get_model_path
 from history import write_history, read_history, print_history
 
 print(Llama.__doc__)
 
 def main():
-    llm = Llama(
-        model_path=MODEL_PATH,
-        n_ctx=32768,
-        n_threads=8,
-        chat_format="chatml",
-        verbose=False,
-    )
+    try:
+        llm = Llama(
+            model_path=get_model_path(),
+            n_ctx=131072,
+            n_threads=8,
+            chat_format="chatml",
+            verbose=False,
+        )
+    except ValueError:
+        print(f"Модель по пути {get_model_path()} не найдена\n"
+              f"Для использования модели поместите её в папку models\n"
+              f"После добавьте полное название файла в config.json")
+        return
 
     print("Модель загружена. ‘exit’ для выхода.")
     history = read_history()
