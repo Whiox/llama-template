@@ -1,0 +1,9 @@
+models/*
+.venv
+.idea
+
+venc
+idea
+
+prompt.txt
+history.json
