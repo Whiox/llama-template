@@ -1,5 +1,5 @@
 
-MODEL_PATH = "models/MistralThinker-v1.1.i1-Q4_K_M.gguf"
+MODEL_PATH = "models/*"
 
 def get_prompt():
     with open('prompt.txt', 'r', encoding='utf-8') as file:
