@@ -1,6 +1,6 @@
 from llama_cpp import Llama
 from config import get_prompt, format_chat, get_model_path
-from history import write_history, read_history, print_history
+from history import write_history, read_history, print_history, delete_history
 
 print(Llama.__doc__)
 
@@ -8,8 +8,9 @@ def main():
     try:
         llm = Llama(
             model_path=get_model_path(),
-            n_ctx=131072,
+            n_ctx=16384,
             n_threads=8,
+            n_gpu_layers=-1,
             chat_format="chatml",
             verbose=False,
         )
@@ -19,7 +20,7 @@ def main():
               f"После добавьте полное название файла в config.json")
         return
 
-    print("Модель загружена. ‘exit’ для выхода.")
+    print("Модель загружена. ‘exit’ для выхода, clear для очистки истории.")
     history = read_history()
 
     print_history(history)
@@ -28,6 +29,10 @@ def main():
         user_input = input(">>> ").strip()
         if user_input.lower() in ("exit", "quit"):
             break
+        elif user_input.lower() == "clear":
+            delete_history()
+            history = read_history()
+            continue
 
         prompt = format_chat(history, user_input)
 
