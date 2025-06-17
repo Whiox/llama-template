@@ -8,11 +8,11 @@ DEFAULT_PROMPT = """
 def create_prompt(func):
     def wrapper(*args, **kwargs):
         try:
-            with open('prompt1.txt', 'r', encoding='utf-8') as file:
+            with open('prompt.txt', 'r', encoding='utf-8') as file:
                 prompt = file.read()
                 return func(*args, **kwargs)
         except FileNotFoundError:
-            with open('prompt1.txt', 'w', encoding='utf-8') as file:
+            with open('prompt.txt', 'w', encoding='utf-8') as file:
                 file.write(DEFAULT_PROMPT)
                 return func(*args, **kwargs)
     return wrapper

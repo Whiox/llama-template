@@ -1,5 +1,5 @@
 from llama_cpp import Llama
-from config import get_model_path, find_models, write_models
+from config import get_model_path, find_models, write_models, change_model
 from history import write_history, read_history, print_history, delete_history
 from model import format_chat
 
@@ -21,14 +21,10 @@ def main():
                   f"Для использования модели поместите её в папку models\n"
                   f"После добавьте полное название файла в config.json\n\n"
                   f"Или выберете из списка моделей:")
-            models = find_models()
 
-            for index, model in enumerate(models):
-                print(f"{index}) {model}")
+            change_model()
 
-            write_models(models[int(input("Введите номер модели: "))])
-
-    print("Модель загружена. ‘exit’ для выхода, clear для очистки истории.")
+    print("Модель загружена. ‘exit’ для выхода, clear для очистки истории. change для смены модели")
     history = read_history()
 
     print_history(history)
@@ -40,6 +36,9 @@ def main():
         elif user_input.lower() == "clear":
             delete_history()
             history = read_history()
+            continue
+        elif user_input.lower() == "change":
+            change_model()
             continue
 
         prompt = format_chat(history, user_input)

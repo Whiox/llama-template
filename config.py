@@ -42,7 +42,6 @@ def find_models():
 
 @create_config
 def write_models(model):
-    print(model)
     with open("config.json", "r") as file:
         config = json.load(file)
 
@@ -51,3 +50,13 @@ def write_models(model):
     with open("config.json", "w") as file:
         json.dump(config, file, indent=2)
 
+    print(f"Модель сохранена, текущая модель: {model}")
+
+
+def change_model():
+    models = find_models()
+
+    for index, model in enumerate(models):
+        print(f"{index}) {model}")
+
+    write_models(models[int(input("Введите номер модели: "))])
