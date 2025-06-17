@@ -1,6 +1,7 @@
 from llama_cpp import Llama
-from config import get_prompt, format_chat, get_model_path, find_models, write_models
+from config import get_model_path, find_models, write_models
 from history import write_history, read_history, print_history, delete_history
+from model import format_chat
 
 print(Llama.__doc__)
 

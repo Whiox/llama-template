@@ -24,25 +24,6 @@ def create_config(func):
     return wrapper
 
 
-def get_prompt():
-    with open('prompt.txt', 'r', encoding='utf-8') as file:
-        prompt = file.read()
-    return prompt
-
-
-def format_chat(history, user_input):
-    prompt = get_prompt().strip()
-    chat = "<|system|>\n" + prompt + "\n"
-
-    for i, (u, a) in enumerate(history):
-        if i > 0 and i % 5 == 0:
-            chat += "<|system|>\n" + prompt + "\n"
-        chat += f"<|user|>\n{u}\n<|assistant|>\n{a}\n"
-
-    chat += "<|user|>\n" + user_input + "\n<|assistant|>\n"
-    return chat
-
-
 @create_config
 def get_model_path():
     with open('config.json', 'r', encoding='utf-8') as file:
