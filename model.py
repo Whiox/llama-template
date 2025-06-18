@@ -25,14 +25,22 @@ def get_prompt():
     return prompt
 
 
-def format_chat(history, user_input):
-    prompt = get_prompt().strip()
-    chat = "<|system|>\n" + prompt + "\n"
+def format_chat(history, user_input, max_tokens=32000):
+    system_prompt = "<|system|>\n" + get_prompt().strip() + "\n"
 
-    for i, (u, a) in enumerate(history):
-        if i > 0 and i % 5 == 0:
-            chat += "<|system|>\n" + prompt + "\n"
-        chat += f"<|user|>\n{u}\n<|assistant|>\n{a}\n"
+    chat_body = ""
+    for u, a in history:
+        chat_body += f"<|user|>\n{u}\n<|assistant|>\n{a}\n"
+    chat_body += f"<|user|>\n{user_input}\n<|assistant|>\n"
 
-    chat += "<|user|>\n" + user_input + "\n<|assistant|>\n"
-    return chat
+    full_prompt = system_prompt + chat_body
+    trimmed_history = history[:]
+    while len(full_prompt.split()) > max_tokens and trimmed_history:
+        trimmed_history.pop(0)
+        chat_body = ""
+        for u, a in trimmed_history:
+            chat_body += f"<|user|>\n{u}\n<|assistant|>\n{a}\n"
+        chat_body += f"<|user|>\n{user_input}\n<|assistant|>\n"
+        full_prompt = system_prompt + chat_body
+
+    return full_prompt
