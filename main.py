@@ -1,5 +1,5 @@
 from llama_cpp import Llama
-from config import get_model_path, find_models, write_models, change_model
+from config import get_model_path, change_model, get_config
 from history import write_history, read_history, print_history, delete_history
 from model import format_chat
 
@@ -8,10 +8,12 @@ print(Llama.__doc__)
 def main():
     while True:
         try:
+            config = get_config()
+
             llm = Llama(
                 model_path=get_model_path(),
-                n_ctx=32768,
-                n_threads=8,
+                n_ctx=config['n_ctx'],
+                n_threads=config['n_threads'],
                 chat_format="chatml",
                 verbose=False,
             )
@@ -45,7 +47,7 @@ def main():
 
         stream = llm(
             prompt,
-            max_tokens=200,
+            max_tokens=800,
             temperature=0.8,
             top_p=0.9,
             repeat_penalty=1.2,

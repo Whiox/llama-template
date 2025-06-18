@@ -5,7 +5,9 @@ import os
 
 DEFAULT_CONFIG = {
     "model": {
-        "filename": "none.gguf"
+        "filename": "none.gguf",
+        "n_ctx": 32768,
+        "n_threads": 8
     }
 }
 
@@ -29,6 +31,13 @@ def get_model_path():
     with open('config.json', 'r', encoding='utf-8') as file:
         config = json.load(file)
     return f"models/{config['model']['filename']}"
+
+
+@create_config
+def get_config():
+    with open('config.json', 'r', encoding='utf-8') as file:
+        config = json.load(file)['model']
+    return config
 
 
 @create_config
